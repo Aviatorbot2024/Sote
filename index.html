@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Administração</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .order {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin: 10px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .order button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .order button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Painel de Administração - Pedidos</h1>
+
+    <div id="orders-container"></div>
+
+    <script>
+        // Simulando a obtenção dos pedidos de um arquivo JSON ou de uma API
+        const orders = [
+            { id: 1, items: ['Maçã', 'Banana'], total: 35, status: 'Pendente', created_at: '2024-11-12' },
+            { id: 2, items: ['Laranja', 'Uva'], total: 45, status: 'Pendente', created_at: '2024-11-12' }
+        ];
+
+        // Função para carregar os pedidos no painel
+        function loadOrders() {
+            const ordersContainer = document.getElementById('orders-container');
+            ordersContainer.innerHTML = ''; // Limpa o conteúdo anterior
+
+            if (orders.length === 0) {
+                ordersContainer.innerHTML = '<p>Não há pedidos.</p>';
+            } else {
+                orders.forEach(order => {
+                    const orderDiv = document.createElement('div');
+                    orderDiv.classList.add('order');
+
+                    orderDiv.innerHTML = `
+                        <p><strong>Itens:</strong> ${order.items.join(', ')}</p>
+                        <p><strong>Total:</strong> ${order.total} MT</p>
+                        <p><strong>Status:</strong> ${order.status}</p>
+                        <p><strong>Data:</strong> ${order.created_at}</p>
+                        ${order.status === 'Pendente' ? `<button onclick="approveOrder(${order.id})">Aprovar Pedido</button>` : ''}
+                    `;
+                    
+                    ordersContainer.appendChild(orderDiv);
+                });
+            }
+        }
+
+        // Função para aprovar o pedido
+        function approveOrder(orderId) {
+            const order = orders.find(order => order.id === orderId);
+            if (order) {
+                order.status = 'Aprovado'; // Alterar o status do pedido para Aprovado
+                alert(`Pedido ${order.id} aprovado com sucesso!`);
+                loadOrders(); // Recarregar a lista de pedidos
+            }
+        }
+
+        // Carregar os pedidos ao carregar a página
+        window.onload = loadOrders;
+    </script>
+</body>
+</html>
